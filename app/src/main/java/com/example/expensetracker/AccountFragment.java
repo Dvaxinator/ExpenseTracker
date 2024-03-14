@@ -2,24 +2,20 @@ package com.example.expensetracker;
 
 import android.content.Intent;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.FrameLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
+import androidx.fragment.app.Fragment;
+
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+
+import java.util.Objects;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -30,7 +26,8 @@ public class AccountFragment extends Fragment {
 
     private FirebaseAuth mAuth;
     FirebaseUser user;
-    private Button buttonInitiatePasswordReset, buttonResetPassword, buttonAccountInfo;
+    private Button buttonInitiatePasswordReset;
+    private Button buttonResetPassword;
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
@@ -73,50 +70,37 @@ public class AccountFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_account, container, false);
-        buttonAccountInfo = view.findViewById(R.id.buttonAccountInfo);
-        TextView accountInfo = (TextView) view.findViewById(R.id.accountInfo);
-        EditText oldPasswordInput = (EditText) view.findViewById(R.id.oldPasswordInput);
-        EditText newPasswordInput = (EditText) view.findViewById(R.id.newPasswordInput);
-        EditText confirmNewPasswordInput = (EditText) view.findViewById(R.id.confirmNewPasswordInput);
+        Button buttonAccountInfo = view.findViewById(R.id.buttonAccountInfo);
+        TextView accountInfo = view.findViewById(R.id.accountInfo);
+        EditText oldPasswordInput = view.findViewById(R.id.oldPasswordInput);
+        EditText newPasswordInput = view.findViewById(R.id.newPasswordInput);
+        EditText confirmNewPasswordInput = view.findViewById(R.id.confirmNewPasswordInput);
         buttonInitiatePasswordReset = view.findViewById(R.id.buttonInitiatePasswordReset);
         buttonResetPassword = view.findViewById(R.id.buttonResetPassword);
-        buttonAccountInfo.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                accountInfo.setText("Email: " + user.getEmail() + "\n");
-                accountInfo.setVisibility(View.VISIBLE);
-                buttonInitiatePasswordReset.setVisibility(View.VISIBLE);
-                buttonInitiatePasswordReset.setOnClickListener(new View.OnClickListener() {
-                    public void onClick(View v)
-                    {
-                        oldPasswordInput.setVisibility(View.VISIBLE);
-                        newPasswordInput.setVisibility(View.VISIBLE);
-                        confirmNewPasswordInput.setVisibility(View.VISIBLE);
-                        buttonResetPassword.setVisibility(View.VISIBLE);
-                        buttonResetPassword.setOnClickListener(new View.OnClickListener() {
-                            public void onClick(View v) {
-                                mAuth.signInWithEmailAndPassword(user.getEmail(), oldPasswordInput.getText().toString()).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                                    @Override
-                                    public void onComplete(@NonNull Task<AuthResult> task) {
-                                        if(task.isSuccessful()){
-                                            if(newPasswordInput.getText().toString().equals(confirmNewPasswordInput.getText().toString()) && newPasswordInput.getText().toString().length() >= 6) {
-                                                user.updatePassword(newPasswordInput.getText().toString());
-                                                startActivity(new Intent(requireActivity(), ActivityLogin.class));
-                                            } else {
-                                                Toast.makeText(getActivity(), "Updating Password Failed!, Please ensure the new passwords match and are of valid length!", Toast.LENGTH_LONG).show();
-                                            }
-                                        }else {
-                                            Toast.makeText(getActivity(), "Updating Password Failed!, Please check credentials.", Toast.LENGTH_LONG).show();
-                                        }
-                                    }
-                                });
-                            }
-                        });
+        buttonAccountInfo.setOnClickListener(v -> {
+            accountInfo.setText("Email: " + user.getEmail() + "\n");
+            accountInfo.setVisibility(View.VISIBLE);
+            buttonInitiatePasswordReset.setVisibility(View.VISIBLE);
+            buttonInitiatePasswordReset.setOnClickListener(v1 -> {
+                oldPasswordInput.setVisibility(View.VISIBLE);
+                newPasswordInput.setVisibility(View.VISIBLE);
+                confirmNewPasswordInput.setVisibility(View.VISIBLE);
+                buttonResetPassword.setVisibility(View.VISIBLE);
+                buttonResetPassword.setOnClickListener(v11 -> mAuth.signInWithEmailAndPassword(Objects.requireNonNull(user.getEmail()), oldPasswordInput.getText().toString()).addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        if (newPasswordInput.getText().toString().equals(confirmNewPasswordInput.getText().toString()) && newPasswordInput.getText().toString().length() >= 6) {
+                            user.updatePassword(newPasswordInput.getText().toString());
+                            startActivity(new Intent(requireActivity(), ActivityLogin.class));
+                        } else {
+                            Toast.makeText(getActivity(), "Updating Password Failed!, Please ensure the new passwords match and are of valid length!", Toast.LENGTH_LONG).show();
+                        }
+                    } else {
+                        Toast.makeText(getActivity(), "Updating Password Failed!, Please check credentials.", Toast.LENGTH_LONG).show();
                     }
-                });
-            }
+                }));
+            });
         });
         // Inflate the layout for this fragment
 

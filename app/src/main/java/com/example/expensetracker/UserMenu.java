@@ -22,14 +22,12 @@ public class UserMenu extends AppCompatActivity {
         replaceFragment(new AccountFragment());
         binding.bottomNavigationView.getMenu().findItem(R.id.account).setChecked(true);
 
-        binding.bottomNavigationView.setOnNavigationItemSelectedListener(item -> {
-            switch (item.getItemId()) {
-                case R.id.account:
-                    replaceFragment(new AccountFragment());
-                    break;
-                case R.id.settings:
-                    replaceFragment(new SettingsFragment());
-                    break;
+        binding.bottomNavigationView.setOnItemSelectedListener(item -> {
+            int id = item.getItemId();
+            if (id == R.id.account) {
+                replaceFragment(new AccountFragment());
+            } else if (id == R.id.settings) {
+                replaceFragment(new SettingsFragment());
             }
             return true;
         });

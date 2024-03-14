@@ -2,18 +2,13 @@ package com.example.expensetracker;
 
 import android.content.Intent;
 import android.os.Bundle;
-
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.util.Patterns;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import androidx.appcompat.app.AppCompatActivity;
 
-// firebase import
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
@@ -51,7 +46,7 @@ public class SignUpActivity extends AppCompatActivity {
         buttonLogIn.setOnClickListener(view -> goToLogin());
     }
 
-    private void goToLogin(){
+    private void goToLogin() {
         Intent loginPageIntent = new Intent(SignUpActivity.this, ActivityLogin.class);
         startActivity(loginPageIntent);
         finish();
@@ -88,35 +83,33 @@ public class SignUpActivity extends AppCompatActivity {
         }
 
         // Continue with sign-up process
-        mAuth.createUserWithEmailAndPassword(email, password)
-                .addOnCompleteListener(this, task -> {
-                    if (task.isSuccessful()) {
-                        // Sign in success, display a message to the user
-                        Toast.makeText(SignUpActivity.this, "Sign-up successful!",
-                                Toast.LENGTH_SHORT).show();
+        mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(this, task -> {
+            if (task.isSuccessful()) {
+                // Sign in success, display a message to the user
+                Toast.makeText(SignUpActivity.this, "Sign-up successful!", Toast.LENGTH_SHORT).show();
 
-                        // Get the current authenticated user
-                        FirebaseUser user = mAuth.getCurrentUser();
+                // Get the current authenticated user
+                FirebaseUser user = mAuth.getCurrentUser();
 
-                        // Create a new Intent to start UserMenuActivity
-                        Intent intent = new Intent(SignUpActivity.this, UserMenu.class);
+                // Create a new Intent to start UserMenuActivity
+                Intent intent = new Intent(SignUpActivity.this, UserMenu.class);
 
-                        // Pass the user's email as an extra
-                        intent.putExtra("userEmail", user.getEmail());
+                // Pass the user's email as an extra
+                assert user != null;
+                intent.putExtra("userEmail", user.getEmail());
 
-                        // You could pass other user details here as needed
+                // You could pass other user details here as needed
 
-                        // Start the UserMenuActivity
-                        startActivity(intent);
+                // Start the UserMenuActivity
+                startActivity(intent);
 
-                        // Optionally, if you want to finish the SignUpActivity
-                        finish();
+                // Optionally, if you want to finish the SignUpActivity
+                finish();
 
-                    } else {
-                        // If sign in fails, display a message to the user
-                        Toast.makeText(SignUpActivity.this, "Sign-up failed.",
-                                Toast.LENGTH_SHORT).show();
-                    }
-                });
+            } else {
+                // If sign in fails, display a message to the user
+                Toast.makeText(SignUpActivity.this, "Sign-up failed.", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }
