@@ -15,6 +15,7 @@ import androidx.navigation.ui.NavigationUI;
 
 import com.example.expensetracker.databinding.ActivityLoginBinding;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 public class ActivityLogin extends AppCompatActivity {
 
@@ -82,8 +83,13 @@ public class ActivityLogin extends AppCompatActivity {
          */
         mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
-                // redirect to App Home Page!! (poll part!)      // creating empty activity for now!!
-                startActivity(new Intent(ActivityLogin.this, UserMenu.class));
+                FirebaseUser user = mAuth.getCurrentUser();
+                if (user != null && user.isEmailVerified()) {
+                    startActivity(new Intent(ActivityLogin.this, UserMenu.class));
+                    finish();
+                } else {
+                    Toast.makeText(ActivityLogin.this, "Please verify your email before logging in.", Toast.LENGTH_LONG).show();
+                }
             } else {
                 Toast.makeText(ActivityLogin.this, "Login Failed!, Please check credentials.", Toast.LENGTH_LONG).show();
             }

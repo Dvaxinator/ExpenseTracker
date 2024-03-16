@@ -91,20 +91,18 @@ public class SignUpActivity extends AppCompatActivity {
                 // Get the current authenticated user
                 FirebaseUser user = mAuth.getCurrentUser();
 
-                // Create a new Intent to start UserMenuActivity
-                Intent intent = new Intent(SignUpActivity.this, UserMenu.class);
-
-                // Pass the user's email as an extra
+                // Send email verification
                 assert user != null;
-                intent.putExtra("userEmail", user.getEmail());
+                user.sendEmailVerification().addOnCompleteListener(task1 -> {
+                    if (task1.isSuccessful()) {
+                        Toast.makeText(SignUpActivity.this, "Verification email sent to " + user.getEmail(), Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(SignUpActivity.this, "Failed to send verification email", Toast.LENGTH_SHORT).show();
+                    }
+                });
 
-                // You could pass other user details here as needed
-
-                // Start the UserMenuActivity
-                startActivity(intent);
-
-                // Optionally, if you want to finish the SignUpActivity
-                finish();
+                // Redirect to login screen
+                goToLogin();
 
             } else {
                 // If sign in fails, display a message to the user
