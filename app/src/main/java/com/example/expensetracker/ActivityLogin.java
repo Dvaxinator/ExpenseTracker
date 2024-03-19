@@ -24,6 +24,17 @@ public class ActivityLogin extends AppCompatActivity {
     private EditText userPassword;
     private FirebaseAuth mAuth;
 
+    // Goes to the UserMenu activity if the user is already logged in and their email is verified
+    @Override
+    protected void onStart() {
+        super.onStart();
+        FirebaseUser user = mAuth.getCurrentUser();
+        if (user != null && user.isEmailVerified()) {
+            startActivity(new Intent(ActivityLogin.this, UserMenu.class));
+            finish();
+        }
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
