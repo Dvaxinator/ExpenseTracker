@@ -76,7 +76,6 @@ public class SettingsFragment extends Fragment {
     private void logout() {
         // TODO: Implement logout logic
         mAuth.signOut();
-
         startActivity(new Intent(requireActivity(), ActivityLogin.class));
     }
 }

@@ -11,10 +11,11 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserProfileChangeRequest;
 
 public class SignUpActivity extends AppCompatActivity {
 
-    private EditText editTextFirstName;
+    private EditText editTextName;
     private EditText editTextEmail;
     private EditText editTextPassword;
     private EditText editTextConfirmPassword;
@@ -34,18 +35,16 @@ public class SignUpActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
 
         // Initialize views
-        editTextFirstName = findViewById(R.id.editTextFirstName);
+        editTextName = findViewById(R.id.editTextName);
         editTextEmail = findViewById(R.id.editTextEmail);
         editTextPassword = findViewById(R.id.editTextPassword);
         editTextConfirmPassword = findViewById(R.id.editTextConfirmPassword);
         editTextUsername = findViewById(R.id.editTextUsername);
         buttonSignUp = findViewById(R.id.buttonSignUpPage);
         buttonLogIn = findViewById(R.id.buttonLogIn);
-
         buttonSignUp.setOnClickListener(view -> signUp());
         buttonLogIn.setOnClickListener(view -> goToLogin());
     }
-
     private void goToLogin() {
         Intent loginPageIntent = new Intent(SignUpActivity.this, ActivityLogin.class);
         startActivity(loginPageIntent);
@@ -54,14 +53,14 @@ public class SignUpActivity extends AppCompatActivity {
 
     private void signUp() {
         // Retrieve user input
-        String firstName = editTextFirstName.getText().toString().trim();
+        String name = editTextName.getText().toString().trim();
         String email = editTextEmail.getText().toString().trim();
         String password = editTextPassword.getText().toString().trim();
         String confirmPassword = editTextConfirmPassword.getText().toString().trim();
         String username = editTextUsername.getText().toString().trim();
 
         // Validate inputs
-        if (firstName.isEmpty() || email.isEmpty() || password.isEmpty() || confirmPassword.isEmpty() || username.isEmpty()) {
+        if (name.isEmpty() || email.isEmpty() || password.isEmpty() || confirmPassword.isEmpty() || username.isEmpty()) {
             Toast.makeText(this, "Please fill in all fields", Toast.LENGTH_SHORT).show();
             return;
         }
@@ -87,12 +86,22 @@ public class SignUpActivity extends AppCompatActivity {
             if (task.isSuccessful()) {
                 // Sign in success, display a message to the user
                 Toast.makeText(SignUpActivity.this, "Sign-up successful!", Toast.LENGTH_SHORT).show();
-
                 // Get the current authenticated user
                 FirebaseUser user = mAuth.getCurrentUser();
-
-                // Send email verification
+                UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder().setDisplayName(username).build();
                 assert user != null;
+                user.updateProfile(profileUpdates).addOnCompleteListener(task1 -> {
+                    if (task1.isSuccessful()) {
+                        // Display a message indicating that the display name has been set
+                        Toast.makeText(SignUpActivity.this, "Display name set successfully!", Toast.LENGTH_SHORT).show();
+
+                    } else {
+                        // Display a message if setting the display name fails
+                        Toast.makeText(SignUpActivity.this, "Failed to set display name!", Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+
                 user.sendEmailVerification().addOnCompleteListener(task1 -> {
                     if (task1.isSuccessful()) {
                         Toast.makeText(SignUpActivity.this, "Verification email sent to " + user.getEmail(), Toast.LENGTH_SHORT).show();
