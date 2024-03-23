@@ -1,6 +1,7 @@
 package com.example.expensetracker;
 
 import android.app.DatePickerDialog;
+import android.app.Dialog;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +13,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 
 import java.util.Calendar;
@@ -21,7 +23,7 @@ import java.util.Calendar;
  * Use the {@link AddExpenseFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class AddExpenseFragment extends Fragment {
+public class AddExpenseFragment extends DialogFragment {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -40,6 +42,17 @@ public class AddExpenseFragment extends Fragment {
 
     public AddExpenseFragment() {
         // Required empty public constructor
+    }
+
+    @NonNull
+    @Override
+    public Dialog onCreateDialog(Bundle savedInstanceState) {
+        return new Dialog(getActivity(), getTheme()) {
+            @Override
+            public void onBackPressed() {
+                dismiss();
+            }
+        };
     }
 
     /**
@@ -130,7 +143,7 @@ public class AddExpenseFragment extends Fragment {
                     ((OnExpenseAddedListener) getActivity()).onExpenseAdded(expense);
                     Toast.makeText(getContext(), "Expense Added!", Toast.LENGTH_SHORT).show();
                 }
-                getActivity().onBackPressed();
+                dismiss();
             }
         });
 

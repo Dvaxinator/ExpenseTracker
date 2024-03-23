@@ -41,7 +41,6 @@ public class HomePageFragment extends Fragment implements AddExpenseFragment.OnE
         recyclerView.setLayoutManager(linearLayoutManager);
 
         // bottomNavigationView = view.findViewById(R.id.bottomNavigationView);
-        // Inflate the menu for BottomNavigationView might not be needed in a fragment, depends on your design
 
         myAdapter = new MyAdapter(dataSet, getActivity(), this); // getActivity() is used to provide a context
         recyclerView.setAdapter(myAdapter);
@@ -58,8 +57,10 @@ public class HomePageFragment extends Fragment implements AddExpenseFragment.OnE
         add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AddExpenseFragment addExpenseFragment = new AddExpenseFragment();
-                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.home_page_frame_layout, addExpenseFragment).addToBackStack(null).commit();
+                // AddExpenseFragment addExpenseFragment = new AddExpenseFragment();
+                // getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.home_page_frame_layout, addExpenseFragment).addToBackStack(null).commit();
+                AddExpenseFragment addExpenseDialog = new AddExpenseFragment();
+                addExpenseDialog.show(getActivity().getSupportFragmentManager().beginTransaction(), "addExpenseDialog");
             }
         });
 
