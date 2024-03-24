@@ -23,7 +23,6 @@ import java.util.Set;
 
 public class HomePageFragment extends Fragment implements AddExpenseFragment.OnExpenseAddedListener, MyAdapter.OnExpenseDeletedListener {
 
-    BottomNavigationView bottomNavigationView;
     Button add;
     RecyclerView recyclerView;
     ArrayList<MyDataSet> dataSet = new ArrayList<>();
@@ -36,7 +35,7 @@ public class HomePageFragment extends Fragment implements AddExpenseFragment.OnE
         View view = inflater.inflate(R.layout.activity_home_page, container, false);
 
         add = view.findViewById(R.id.addExpenseButton);
-        recyclerView = view.findViewById(R.id.recyler_view);
+        recyclerView = view.findViewById(R.id.recycler_view);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(linearLayoutManager);
 
@@ -48,7 +47,7 @@ public class HomePageFragment extends Fragment implements AddExpenseFragment.OnE
         Set<String> expensesSet = sharedPreferences.getStringSet("expenses_set", new HashSet<String>());
         for (String expense : expensesSet) {
             String[] expenseData = expense.split(",");
-            dataSet.add(new MyDataSet(Integer.parseInt(expenseData[0]), expenseData[1], Double.parseDouble(expenseData[2]), expenseData[3], expenseData[4]));
+            dataSet.add(new MyDataSet(expenseData[0], Double.parseDouble(expenseData[1]), expenseData[2], expenseData[3]));
         }
         myAdapter.notifyDataSetChanged();
 
@@ -79,7 +78,7 @@ public class HomePageFragment extends Fragment implements AddExpenseFragment.OnE
     private void updateSharedPreferences() {
         Set<String> expensesSet = new HashSet<>();
         for (MyDataSet data : dataSet) {
-            expensesSet.add(data.getImage() + "," + data.getDescription() + "," + data.getAmount() + "," + data.getCategory() + "," + data.getDate());
+            expensesSet.add(data.getDescription() + "," + data.getAmount() + "," + data.getCategory() + "," + data.getDate());
         }
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putStringSet("expenses_set", expensesSet);
@@ -100,7 +99,7 @@ public class HomePageFragment extends Fragment implements AddExpenseFragment.OnE
         Set<String> expensesSet = sharedPreferences.getStringSet("expenses_set", new HashSet<String>());
         for (String expense : expensesSet) {
             String[] expenseData = expense.split(",");
-            dataSet.add(new MyDataSet(Integer.parseInt(expenseData[0]), expenseData[1], Double.parseDouble(expenseData[2]), expenseData[3], expenseData[4]));
+            dataSet.add(new MyDataSet(expenseData[0], Double.parseDouble(expenseData[1]), expenseData[2], expenseData[3]));
         }
         myAdapter.notifyDataSetChanged(); // Notify the adapter about the dataset change.
     }

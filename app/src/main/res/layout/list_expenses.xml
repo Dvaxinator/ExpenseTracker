@@ -23,7 +23,8 @@
                 android:id="@+id/image_view"
                 android:layout_width="100dp"
                 android:layout_height="100dp"
-                android:scaleType="centerCrop" />
+                android:scaleType="centerCrop"
+                android:src="@drawable/expense_symbol"/>
 
             <LinearLayout
                 android:id="@+id/lin_card2"

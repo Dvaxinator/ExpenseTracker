@@ -5,18 +5,12 @@ public class MyDataSet {
     public double amount;
     public String category;
     public String date;
-    public int image;
 
-    public MyDataSet(int image, String description, double amount, String category, String date) {
-        this.image = image;
+    public MyDataSet(String description, double amount, String category, String date) {
         this.description = description;
         this.amount = amount;
         this.category = category;
         this.date = date;
-    }
-
-    public int getImage(){
-        return  image;
     }
 
     public double getAmount() {
