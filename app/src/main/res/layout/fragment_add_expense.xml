@@ -4,55 +4,107 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context=".AddExpenseFragment">
+    android:layout_height="wrap_content"
+    android:padding="16dp"
+    android:background="@drawable/rounded_border_bg">
 
-    <EditText
-        android:id="@+id/description"
+    <TextView
+        android:id="@+id/text1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Enter description..." />
+        android:layout_alignParentTop="true"
+        android:layout_marginBottom="16dp"
+        android:gravity="center"
+        android:text="ADD EXPENSE"
+        android:textSize="30sp"
+        android:textColor="#333333"
+        android:textStyle="bold"/>
 
-    <EditText
-        android:id="@+id/amount"
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/descriptionTextLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/description"
-        android:hint="Enter amount..."
-        android:inputType="numberDecimal" />
+        android:layout_below="@id/text1">
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/description"
+            style="@style/ThemeOverlay.Material3.TextInputEditText.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Description"
+            android:inputType="text"
+            android:singleLine="true" />
+    </com.google.android.material.textfield.TextInputLayout>
 
-    <EditText
-        android:id="@+id/category"
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/amountTextLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/amount"
-        android:hint="Enter category..." />
+        android:layout_below="@id/descriptionTextLayout"
+        android:paddingVertical="16dp">
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/amount"
+            style="@style/ThemeOverlay.Material3.TextInputEditText.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Enter amount..."
+            android:inputType="numberDecimal"
+            android:singleLine="true" />
+    </com.google.android.material.textfield.TextInputLayout>
 
-    <EditText
-        android:id="@+id/date"
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/categoryTextLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/category"
-        android:drawablePadding="8dp"
-        android:hint="Date"
-        android:inputType="date" />
+        android:layout_below="@id/amountTextLayout"
+        android:paddingVertical="16dp">
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/category"
+            style="@style/ThemeOverlay.Material3.TextInputEditText.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Enter category..."
+            android:inputType="text"
+            android:singleLine="true" />
+    </com.google.android.material.textfield.TextInputLayout>
 
-    <Button
-        android:id="@+id/calendar_btn"
-        android:layout_width="wrap_content"
+    <RelativeLayout
+        android:id="@+id/dateLayout"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignBaseline="@id/date"
-        android:layout_alignParentEnd="true"
-        android:drawableEnd="@drawable/baseline_calendar_month_24" />
+        android:layout_below="@id/categoryTextLayout"
+        android:layout_marginTop="16dp">
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/dateTextLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingVertical="16dp">
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/date"
+                style="@style/ThemeOverlay.Material3.TextInputEditText.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Date"
+                android:inputType="date"
+                android:singleLine="true" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <Button
+            android:id="@+id/calendar_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:drawableEnd="@drawable/baseline_calendar_month_24" />
+    </RelativeLayout>
 
     <Button
         android:id="@+id/confirm_add"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/date"
+        android:layout_below="@id/dateLayout"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="16dp"
-        android:text="ADD" />
+        android:text="ADD"
+        android:textColor="#FFFFFF" />
 
 </RelativeLayout>

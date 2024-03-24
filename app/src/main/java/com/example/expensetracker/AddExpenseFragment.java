@@ -47,12 +47,18 @@ public class AddExpenseFragment extends DialogFragment {
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        return new Dialog(getActivity(), getTheme()) {
+        // Inflate the layout for this fragment
+        Dialog dialog = new Dialog(getActivity(), getTheme()) {
             @Override
             public void onBackPressed() {
                 dismiss();
             }
         };
+
+        // Set dialog dimensions
+        dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+
+        return dialog;
     }
 
     /**
@@ -90,6 +96,13 @@ public class AddExpenseFragment extends DialogFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_add_expense, container, false);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        // Adjust dialog size after it's been created
+        getDialog().getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
     }
 
     @Override
