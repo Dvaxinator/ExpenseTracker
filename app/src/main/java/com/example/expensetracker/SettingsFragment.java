@@ -7,8 +7,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.fragment.app.Fragment;
 
+import com.google.android.material.switchmaterial.SwitchMaterial;
 import com.google.firebase.auth.FirebaseAuth;
 
 /**
@@ -20,6 +22,7 @@ public class SettingsFragment extends Fragment {
 
     private Button buttonLogOut;
     private FirebaseAuth mAuth;
+    private SwitchMaterial switchDarkMode;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -69,6 +72,16 @@ public class SettingsFragment extends Fragment {
 
         buttonLogOut = view.findViewById(R.id.buttonLogOut);
         buttonLogOut.setOnClickListener(v -> logout());
+
+        switchDarkMode = view.findViewById(R.id.switchDarkMode);
+        switchDarkMode.setChecked(AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_YES);
+        switchDarkMode.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if (isChecked) {
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+            } else {
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+            }
+        });
 
         return view;
     }
