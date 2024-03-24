@@ -29,9 +29,11 @@ public class UserMenu extends AppCompatActivity implements AddExpenseFragment.On
             if (id == R.id.navigation_home) {
                 replaceFragment(homePageFragment, "HOME_FRAGMENT");
             } else if (id == R.id.account) {
-                replaceFragment(new AccountFragment());
+                replaceFragment(new AccountFragment(), "ACCOUNT_FRAGMENT");
+            } else if (id == R.id.reports) {
+                replaceFragment(new ReportsFragment(), "REPORTS_FRAGMENT");
             } else if (id == R.id.settings) {
-                replaceFragment(new SettingsFragment());
+                replaceFragment(new SettingsFragment(), "SETTINGS_FRAGMENT");
             }
             return true;
         });
