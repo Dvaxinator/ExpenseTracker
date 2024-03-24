@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -37,6 +38,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         MyDataSet data = dataList.get(position);
+        holder.imageView.setImageResource(R.drawable.expense_symbol);
         holder.cardDescription.setText(data.getDescription());
         holder.cardAmount.setText(String.valueOf(data.getAmount()));
         holder.cardCategory.setText(data.getCategory());
@@ -86,9 +88,11 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
     public class MyViewHolder extends RecyclerView.ViewHolder {
         TextView cardDescription, cardAmount, cardCategory, cardDate;
         CardView cardView;
+        ImageView imageView;
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
+            imageView = itemView.findViewById(R.id.image_view);
             cardDescription = itemView.findViewById(R.id.card_description);
             cardAmount = itemView.findViewById(R.id.card_amount);
             cardView = itemView.findViewById(R.id.card_view);

@@ -149,7 +149,7 @@ public class AddExpenseFragment extends DialogFragment {
                 double amount = Double.parseDouble(amountText);
 
                 // Create a new MyDataSet object with the entered data
-                MyDataSet expense = new MyDataSet(description, amount, category, date);
+                MyDataSet expense = new MyDataSet(R.drawable.expense_symbol, description, amount, category, date);
 
                 // Pass the expense data to the activity
                 if (getActivity() instanceof OnExpenseAddedListener) {

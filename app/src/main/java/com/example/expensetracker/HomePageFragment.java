@@ -40,8 +40,6 @@ public class HomePageFragment extends Fragment implements AddExpenseFragment.OnE
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(linearLayoutManager);
 
-        // bottomNavigationView = view.findViewById(R.id.bottomNavigationView);
-
         myAdapter = new MyAdapter(dataSet, getActivity(), this); // getActivity() is used to provide a context
         recyclerView.setAdapter(myAdapter);
 
@@ -50,15 +48,13 @@ public class HomePageFragment extends Fragment implements AddExpenseFragment.OnE
         Set<String> expensesSet = sharedPreferences.getStringSet("expenses_set", new HashSet<String>());
         for (String expense : expensesSet) {
             String[] expenseData = expense.split(",");
-            dataSet.add(new MyDataSet(expenseData[0], Double.parseDouble(expenseData[1]), expenseData[2], expenseData[3]));
+            dataSet.add(new MyDataSet(Integer.parseInt(expenseData[0]), expenseData[1], Double.parseDouble(expenseData[2]), expenseData[3], expenseData[4]));
         }
         myAdapter.notifyDataSetChanged();
 
         add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // AddExpenseFragment addExpenseFragment = new AddExpenseFragment();
-                // getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.home_page_frame_layout, addExpenseFragment).addToBackStack(null).commit();
                 AddExpenseFragment addExpenseDialog = new AddExpenseFragment();
                 addExpenseDialog.show(getActivity().getSupportFragmentManager().beginTransaction(), "addExpenseDialog");
             }
@@ -83,7 +79,7 @@ public class HomePageFragment extends Fragment implements AddExpenseFragment.OnE
     private void updateSharedPreferences() {
         Set<String> expensesSet = new HashSet<>();
         for (MyDataSet data : dataSet) {
-            expensesSet.add(data.getDescription() + "," + data.getAmount() + "," + data.getCategory() + "," + data.getDate());
+            expensesSet.add(data.getImage() + "," + data.getDescription() + "," + data.getAmount() + "," + data.getCategory() + "," + data.getDate());
         }
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putStringSet("expenses_set", expensesSet);
@@ -104,9 +100,8 @@ public class HomePageFragment extends Fragment implements AddExpenseFragment.OnE
         Set<String> expensesSet = sharedPreferences.getStringSet("expenses_set", new HashSet<String>());
         for (String expense : expensesSet) {
             String[] expenseData = expense.split(",");
-            dataSet.add(new MyDataSet(expenseData[0], Double.parseDouble(expenseData[1]), expenseData[2], expenseData[3]));
+            dataSet.add(new MyDataSet(Integer.parseInt(expenseData[0]), expenseData[1], Double.parseDouble(expenseData[2]), expenseData[3], expenseData[4]));
         }
         myAdapter.notifyDataSetChanged(); // Notify the adapter about the dataset change.
     }
-
 }

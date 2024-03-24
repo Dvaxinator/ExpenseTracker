@@ -46,7 +46,7 @@
             style="@style/ThemeOverlay.Material3.TextInputEditText.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Enter amount..."
+            android:hint="Amount"
             android:inputType="numberDecimal"
             android:singleLine="true" />
     </com.google.android.material.textfield.TextInputLayout>
@@ -62,7 +62,7 @@
             style="@style/ThemeOverlay.Material3.TextInputEditText.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Enter category..."
+            android:hint="Category"
             android:inputType="text"
             android:singleLine="true" />
     </com.google.android.material.textfield.TextInputLayout>
