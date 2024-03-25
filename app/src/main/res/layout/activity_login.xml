@@ -6,7 +6,7 @@
 
     <ImageView
         android:id="@+id/imageView2"
-        android:layout_width="350dp"
+        android:layout_width="400dp"
         android:layout_height="350dp"
         android:scaleType="centerCrop"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -20,15 +20,13 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Welcome to your own personal Expense Tracker!"
-        android:textSize="30sp"
+        android:text="Let's keep your expenses in check!"
+        android:textSize="15sp"
         android:gravity="center"
         app:layout_constraintTop_toBottomOf="@id/imageView2"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:fontFamily="sans-serif-thin"
-        android:textStyle="bold"
-        />
+        android:textStyle="bold" />
 
     <EditText
         android:id="@+id/editTextUsername"
@@ -39,6 +37,8 @@
         android:padding="12dp"
         android:textColor="@color/black"
         android:textColorHint="@color/lightGray"
+        android:drawableLeft="@drawable/baseline_email_24"
+        android:drawablePadding="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -56,6 +56,8 @@
         android:padding="12dp"
         android:textColor="@color/black"
         android:textColorHint="@color/lightGray"
+        android:drawableLeft="@drawable/baseline_key_24"
+        android:drawablePadding="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -98,12 +100,14 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_margin="20dp"
-        android:text="Register"
+        android:text="Not yet registered? Sign up"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.971" />
+        app:layout_constraintVertical_bias="0.93"
+        android:background="@android:color/transparent"
+        android:textColor="@color/black"/>
 
     <Button
         android:id="@+id/buttonForgotPassword"
@@ -112,6 +116,8 @@
         android:text="Forgot Password?"
         app:layout_constraintStart_toStartOf="@id/buttonLogin"
         app:layout_constraintTop_toBottomOf="@id/editTextPassword"
+        android:background="@android:color/transparent"
+        android:textColor="@color/black"
         />
 
     <Button

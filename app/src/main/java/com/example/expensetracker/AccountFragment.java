@@ -3,11 +3,13 @@ package com.example.expensetracker;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Layout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -25,18 +27,17 @@ import java.util.Objects;
  * create an instance of this fragment.
  */
 public class AccountFragment extends Fragment {
-
     private FirebaseAuth mAuth;
     FirebaseUser user;
     private Button buttonInitiatePasswordReset;
     private Button buttonInitiateUsernameChange;
+    private RelativeLayout relativelayout;
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
-
     public AccountFragment() {
         // Required empty public constructor
     }
@@ -76,6 +77,7 @@ public class AccountFragment extends Fragment {
         Button buttonAccountInfo = view.findViewById(R.id.buttonAccountInfo);
         TextView emailInfo = view.findViewById(R.id.emailInfo);
         TextView usernameInfo = view.findViewById(R.id.usernameInfo);
+        relativelayout = view.findViewById(R.id.relativelayout);
         buttonInitiateUsernameChange = view.findViewById(R.id.buttonInitiateUsernameChange);
         buttonInitiatePasswordReset = view.findViewById(R.id.buttonInitiatePasswordReset);
         buttonAccountInfo.setOnClickListener(v -> {
@@ -84,6 +86,7 @@ public class AccountFragment extends Fragment {
             usernameInfo.setText("Username: " + user.getDisplayName());
             usernameInfo.setVisibility(View.VISIBLE);
             buttonInitiateUsernameChange.setVisibility(View.VISIBLE);
+            relativelayout.setVisibility(View.VISIBLE);
             buttonInitiateUsernameChange.setOnClickListener(v2 -> {
                 AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
                 View dialogView = getLayoutInflater().inflate(R.layout.change_username_dialog, null);

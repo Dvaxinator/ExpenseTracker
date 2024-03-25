@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#121212"
     android:orientation="vertical"
     android:padding="16dp">
 
@@ -22,7 +21,7 @@
             android:layout_weight="7"
             android:gravity="center_vertical"
             android:text="Register Here!"
-            android:textColor="@color/white"
+            android:textColor="@color/black"
             android:textSize="32sp"
             android:textStyle="bold" />
 
@@ -30,7 +29,8 @@
             android:id="@+id/imageView"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="3" />
+            android:layout_weight="3"
+            android:src="@drawable/images"/>
     </LinearLayout>
 
     <EditText
@@ -54,7 +54,9 @@
         android:hint="Email Address"
         android:padding="16dp"
         android:textColor="@color/white"
-        android:textColorHint="@color/lightGray" />
+        android:textColorHint="@color/lightGray"
+        android:drawableLeft="@drawable/baseline_email_24"
+        android:drawablePadding="8dp"/>
 
     <!-- Username field -->
     <EditText
@@ -77,7 +79,9 @@
         android:inputType="textPassword"
         android:padding="16dp"
         android:textColor="@color/white"
-        android:textColorHint="@color/lightGray" />
+        android:textColorHint="@color/lightGray"
+        android:drawableLeft="@drawable/baseline_key_24"
+        android:drawablePadding="8dp"/>
 
     <!-- Confirm Password field -->
     <EditText
@@ -98,7 +102,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="10dp"
-        android:background="#800000"
         android:padding="10dp"
         android:text="Sign Up"
         android:textColor="@color/white" />
@@ -108,10 +111,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="10dp"
-        android:background="#800000"
+        android:background="@android:color/transparent"
         android:padding="10dp"
         android:text="Already a user? Log in"
-        android:textColor="@color/white" />
+        android:textColor="@color/black"
+        />
 
 </LinearLayout>
 
