@@ -1,168 +1,71 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/account"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#121212"
     android:orientation="vertical"
+    android:background="@android:color/background_light"
     tools:context=".AccountFragment">
 
-    <LinearLayout
+    <TextView
+        android:id="@+id/AccountTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Account"
+        android:textSize="30sp"
+        android:textStyle="bold"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="16dp"/>
+
+    <Button
+        android:id="@+id/buttonAccountInfo"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_height="wrap_content"
+        android:text="Account Info"
+        android:textSize="16sp"
+        android:textColor="@android:color/white"
+        android:layout_marginBottom="8dp"/>
 
-        <LinearLayout
-            android:id="@+id/linearLayout"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="9"
-            android:orientation="vertical">
+    <TextView
+        android:id="@+id/usernameInfo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Username: "
+        android:textSize="20sp"
+        android:textColor="@android:color/black"
+        android:visibility="invisible"
+        android:textStyle="bold"/>
 
-            <TextView
-                android:id="@+id/AccountTitle"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="10dp"
-                android:text="Account"
-                android:textAlignment="center"
-                android:textColor="@color/white"
-                android:textSize="20sp" />
+    <TextView
+        android:id="@+id/emailInfo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Email: "
+        android:textSize="20sp"
+        android:textColor="@android:color/black"
+        android:visibility="invisible"
+        android:textStyle="bold"/>
 
-            <TextView
-                android:id="@+id/emailInfo"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="10dp"
-                android:text=""
-                android:textAlignment="center"
-                android:textColor="@color/white"
-                android:textSize="20sp"
-                android:visibility="invisible" />
-            <TextView
-                android:id="@+id/usernameInfo"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="10dp"
-                android:text=""
-                android:textAlignment="center"
-                android:textColor="@color/white"
-                android:textSize="20sp"
-                android:visibility="invisible" />
+    <Button
+        android:id="@+id/buttonInitiateUsernameChange"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Change Username"
+        android:textSize="16sp"
+        android:textColor="@android:color/white"
+        android:layout_marginBottom="8dp"
+        android:visibility="invisible" />
 
-            <Button
-                android:id="@+id/buttonInitiateUsernameChange"
-                android:layout_width="200dp"
-                android:layout_height="40dp"
-                android:layout_gravity="center"
-                android:layout_marginBottom="15dp"
-                android:layout_weight="1"
-                android:text="Change Username"
-                android:textSize="16sp"
-                android:visibility="invisible" />
+    <Button
+        android:id="@+id/buttonInitiatePasswordReset"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Reset Password"
+        android:textSize="16sp"
+        android:textColor="@android:color/white"
+        android:layout_marginBottom="8dp"
+        android:visibility="invisible" />
 
-            <EditText
-                android:id="@+id/newUsernameInput"
-                android:textColorHint="@color/lightGray"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
-                android:hint="New Username"
-                android:padding="16dp"
-                android:textColor="#FFFFFF"
-                android:visibility="gone" />
-
-            <EditText
-                android:id="@+id/confirmNewUsernameInput"
-                android:textColorHint="@color/lightGray"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
-                android:hint="Confirm Username"
-                android:padding="16dp"
-                android:textColor="#FFFFFF"
-                android:visibility="gone" />
-
-            <Button
-                android:id="@+id/buttonUsernameChange"
-                android:layout_width="200dp"
-                android:layout_height="40dp"
-                android:layout_gravity="center"
-                android:layout_marginBottom="15dp"
-                android:layout_weight="1"
-                android:text="Confirm Change Username"
-                android:textSize="16sp"
-                android:visibility="gone" />
-
-            <Button
-                android:id="@+id/buttonInitiatePasswordReset"
-                android:layout_width="200dp"
-                android:layout_height="40dp"
-                android:layout_gravity="center"
-                android:layout_marginBottom="15dp"
-                android:layout_weight="1"
-                android:text="Reset Password"
-                android:textSize="16sp"
-                android:visibility="invisible" />
-
-            <EditText
-                android:id="@+id/oldPasswordInput"
-                android:textColorHint="@color/lightGray"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
-                android:hint="Old Password"
-                android:padding="16dp"
-                android:textColor="#FFFFFF"
-                android:visibility="invisible" />
-
-            <EditText
-                android:id="@+id/newPasswordInput"
-                android:textColorHint="@color/lightGray"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
-                android:hint="New Password"
-                android:padding="16dp"
-                android:textColor="#FFFFFF"
-                android:visibility="invisible" />
-
-            <EditText
-                android:id="@+id/confirmNewPasswordInput"
-                android:textColorHint="@color/lightGray"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
-                android:hint="Confirm Password"
-                android:padding="16dp"
-                android:textColor="#FFFFFF"
-                android:visibility="invisible" />
-
-            <Button
-                android:id="@+id/buttonResetPassword"
-                android:layout_width="200dp"
-                android:layout_height="40dp"
-                android:layout_gravity="center"
-                android:layout_marginBottom="15dp"
-                android:layout_weight="1"
-                android:text="Confirm"
-                android:textSize="16sp"
-                android:visibility="invisible" />
-
-        </LinearLayout>
-
-        <Button
-            android:id="@+id/buttonAccountInfo"
-            android:layout_width="200dp"
-            android:layout_height="0dp"
-            android:layout_gravity="center"
-            android:layout_marginBottom="15dp"
-            android:layout_weight="1"
-            android:text="Account Info"
-            android:textSize="16sp" />
-
-    </LinearLayout>
-
-</FrameLayout>
+</LinearLayout>

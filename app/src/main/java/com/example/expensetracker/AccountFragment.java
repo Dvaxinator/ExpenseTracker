@@ -1,5 +1,6 @@
 package com.example.expensetracker;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -28,9 +29,7 @@ public class AccountFragment extends Fragment {
     private FirebaseAuth mAuth;
     FirebaseUser user;
     private Button buttonInitiatePasswordReset;
-    private Button buttonResetPassword;
     private Button buttonInitiateUsernameChange;
-    private Button buttonChangeUsername;
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
@@ -77,15 +76,8 @@ public class AccountFragment extends Fragment {
         Button buttonAccountInfo = view.findViewById(R.id.buttonAccountInfo);
         TextView emailInfo = view.findViewById(R.id.emailInfo);
         TextView usernameInfo = view.findViewById(R.id.usernameInfo);
-        EditText newUsernameInput = view.findViewById(R.id.newUsernameInput);
-        EditText confirmNewUsernameInput = view.findViewById(R.id.confirmNewUsernameInput);
-        EditText oldPasswordInput = view.findViewById(R.id.oldPasswordInput);
-        EditText newPasswordInput = view.findViewById(R.id.newPasswordInput);
-        EditText confirmNewPasswordInput = view.findViewById(R.id.confirmNewPasswordInput);
         buttonInitiateUsernameChange = view.findViewById(R.id.buttonInitiateUsernameChange);
-        buttonChangeUsername = view.findViewById(R.id.buttonUsernameChange);
         buttonInitiatePasswordReset = view.findViewById(R.id.buttonInitiatePasswordReset);
-        buttonResetPassword = view.findViewById(R.id.buttonResetPassword);
         buttonAccountInfo.setOnClickListener(v -> {
             emailInfo.setText("Email: " + user.getEmail());
             emailInfo.setVisibility(View.VISIBLE);
@@ -93,23 +85,22 @@ public class AccountFragment extends Fragment {
             usernameInfo.setVisibility(View.VISIBLE);
             buttonInitiateUsernameChange.setVisibility(View.VISIBLE);
             buttonInitiateUsernameChange.setOnClickListener(v2 -> {
-                newUsernameInput.setVisibility(View.VISIBLE);
-                confirmNewUsernameInput.setVisibility(View.VISIBLE);
-                buttonChangeUsername.setVisibility(View.VISIBLE);
-                buttonInitiateUsernameChange.setVisibility(View.GONE);
-                buttonChangeUsername.setOnClickListener(v22 -> {
+                AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
+                View dialogView = getLayoutInflater().inflate(R.layout.change_username_dialog, null);
+                EditText confirmusernameEditText = dialogView.findViewById(R.id.confirmUsernameEditText);
+                EditText newusernameEditText = dialogView.findViewById(R.id.newUsernameEditText);
+                builder.setView(dialogView);
+                builder.setTitle("Change Username");
+                builder.setPositiveButton("Update", (dialog, which) -> {
                     FirebaseUser user = mAuth.getCurrentUser();
-                    if(newUsernameInput.getText().toString().equals(confirmNewUsernameInput.getText().toString())) {
-                        UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder().setDisplayName(newUsernameInput.getText().toString()).build();
+                    if(newusernameEditText.getText().toString().equals(confirmusernameEditText.getText().toString())) {
+                        UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder().setDisplayName(newusernameEditText.getText().toString()).build();
                         assert user != null;
                         user.updateProfile(profileUpdates).addOnCompleteListener(task1 -> {
                             if (task1.isSuccessful()) {
                                 // Display a message indicating that the display name has been set
                                 Toast.makeText(getActivity(), "Username changed successfully!", Toast.LENGTH_SHORT).show();
-                                newUsernameInput.setVisibility(View.GONE);
-                                confirmNewUsernameInput.setVisibility(View.GONE);
-                                buttonChangeUsername.setVisibility(View.GONE);
-                                buttonInitiateUsernameChange.setVisibility(View.VISIBLE);
+
                                 usernameInfo.setText("Username: " + user.getDisplayName());
                             } else {
                                 // Display a message if setting the display name fails
@@ -121,35 +112,41 @@ public class AccountFragment extends Fragment {
                         Toast.makeText(getActivity(), "Usernames must match!", Toast.LENGTH_SHORT).show();
                     }
                 });
+                builder.setNegativeButton("Cancel", null);
+                builder.create().show();
             });
 
             buttonInitiatePasswordReset.setVisibility(View.VISIBLE);
             buttonInitiatePasswordReset.setOnClickListener(v1 -> {
-                oldPasswordInput.setVisibility(View.VISIBLE);
-                newPasswordInput.setVisibility(View.VISIBLE);
-                confirmNewPasswordInput.setVisibility(View.VISIBLE);
-                buttonResetPassword.setVisibility(View.VISIBLE);
-                buttonResetPassword.setOnClickListener(v11 -> mAuth.signInWithEmailAndPassword(Objects.requireNonNull(user.getEmail()), oldPasswordInput.getText().toString()).addOnCompleteListener(task -> {
+                AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
+                View dialogView = getLayoutInflater().inflate(R.layout.change_password_dialog, null);
+                EditText oldPasswordEditText = dialogView.findViewById(R.id.oldPasswordEditText);
+                EditText newPasswordEditText = dialogView.findViewById(R.id.newPasswordEditText);
+                EditText confirmPasswordEditText = dialogView.findViewById(R.id.confirmPasswordEditText);
+                builder.setView(dialogView);
+                builder.setTitle("Change Password");
+                builder.setPositiveButton("Update", (dialog, which) -> mAuth.signInWithEmailAndPassword(Objects.requireNonNull(user.getEmail()), oldPasswordEditText.getText().toString()).addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
-                        if (newPasswordInput.getText().toString().equals(confirmNewPasswordInput.getText().toString()) && newPasswordInput.getText().toString().length() >= 6 && !newPasswordInput.getText().toString().equals(oldPasswordInput.getText().toString())) {
-                            user.updatePassword(newPasswordInput.getText().toString());
+                        if (newPasswordEditText.getText().toString().equals(confirmPasswordEditText.getText().toString()) && newPasswordEditText.getText().toString().length() >= 6 && !newPasswordEditText.getText().toString().equals(oldPasswordEditText.getText().toString())) {
+                            user.updatePassword(newPasswordEditText.getText().toString());
                             mAuth.signOut();
                             Toast.makeText(getActivity(), "Updating Password Successful! Please Login Using New Password!", Toast.LENGTH_LONG).show();
                             startActivity(new Intent(requireActivity(), ActivityLogin.class));
-                        }
-                        else if (newPasswordInput.getText().toString().equals(oldPasswordInput.getText().toString())) {
+                        } else if (newPasswordEditText.getText().toString().equals(oldPasswordEditText.getText().toString())) {
                             Toast.makeText(getActivity(), "Updating Password Failed! Please ensure you choose a new password different from your old one!", Toast.LENGTH_LONG).show();
                         } else {
                             Toast.makeText(getActivity(), "Updating Password Failed! Please ensure the new passwords match and are of valid length!", Toast.LENGTH_LONG).show();
                         }
-                    } else {
+                    }
+                    else {
                         Toast.makeText(getActivity(), "Updating Password Failed! Please check credentials.", Toast.LENGTH_LONG).show();
                     }
                 }));
+                builder.setNegativeButton("Cancel", null);
+                builder.create().show();
             });
         });
         // Inflate the layout for this fragment
         return view;
     }
-
 }
