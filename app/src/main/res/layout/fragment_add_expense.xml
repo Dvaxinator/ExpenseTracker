@@ -5,8 +5,8 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="16dp"
-    android:background="@drawable/rounded_border_bg">
+    android:background="@drawable/rounded_border_bg"
+    android:padding="16dp">
 
     <TextView
         android:id="@+id/text1"
@@ -16,9 +16,9 @@
         android:layout_marginBottom="16dp"
         android:gravity="center"
         android:text="ADD EXPENSE"
-        android:textSize="30sp"
         android:textColor="?attr/colorOnBackground"
-        android:textStyle="bold"/>
+        android:textSize="30sp"
+        android:textStyle="bold" />
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/descriptionTextLayout"
@@ -26,6 +26,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/text1"
         android:paddingVertical="10dp">
+
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/description"
             style="@style/ThemeOverlay.Material3.TextInputEditText.OutlinedBox"
@@ -42,6 +43,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/descriptionTextLayout"
         android:paddingVertical="10dp">
+
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/amount"
             style="@style/ThemeOverlay.Material3.TextInputEditText.OutlinedBox"
@@ -58,6 +60,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/amountTextLayout"
         android:paddingVertical="10dp">
+
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/category"
             style="@style/ThemeOverlay.Material3.TextInputEditText.OutlinedBox"
@@ -80,6 +83,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingVertical="10dp">
+
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/date"
                 style="@style/ThemeOverlay.Material3.TextInputEditText.OutlinedBox"
@@ -95,6 +99,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
+            android:backgroundTint="?attr/colorButtonNormal"
             android:drawableEnd="@drawable/baseline_calendar_month_24" />
     </RelativeLayout>
 
@@ -105,7 +110,8 @@
         android:layout_below="@id/dateLayout"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="16dp"
+        android:backgroundTint="?attr/colorButtonNormal"
         android:text="ADD"
-        android:textColor="#FFFFFF" />
+        android:textColor="@color/white" />
 
 </RelativeLayout>

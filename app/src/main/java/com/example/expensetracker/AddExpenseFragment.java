@@ -156,6 +156,7 @@ public class AddExpenseFragment extends DialogFragment {
                     ((OnExpenseAddedListener) getActivity()).onExpenseAdded(expense);
                     Toast.makeText(getContext(), "Expense Added!", Toast.LENGTH_SHORT).show();
                 }
+                replaceFragment(new HomePageFragment(), "HOME_FRAGMENT");
                 dismiss();
             }
         });
@@ -183,5 +184,12 @@ public class AddExpenseFragment extends DialogFragment {
     private void displayDate(int year, int month, int day) {
         String date = day + "-" + (month + 1) + "-" + year;
         addDate.setText(date);
+    }
+
+    private void replaceFragment(Fragment fragment, String tag) {
+        if (fragment == null) {
+            return;
+        }
+        getParentFragmentManager().beginTransaction().replace(R.id.frame_layout, fragment, tag).commit();
     }
 }

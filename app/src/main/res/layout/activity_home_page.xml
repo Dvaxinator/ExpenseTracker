@@ -19,9 +19,11 @@
 
     <Button
         android:id="@+id/addExpenseButton"
+        style="@style/NoTintButton"
         android:layout_width="60dp"
         android:layout_height="60dp"
         android:layout_gravity="bottom|end"
         android:background="@drawable/baseline_add_box_24" />
+
 
 </FrameLayout>
