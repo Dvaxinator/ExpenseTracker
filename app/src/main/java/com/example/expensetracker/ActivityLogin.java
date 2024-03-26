@@ -66,6 +66,14 @@ public class ActivityLogin extends AppCompatActivity {
     }
 
     public void returnToLogin() {
+        logInBtn.setVisibility(View.VISIBLE);
+        signUpBtn.setVisibility(View.VISIBLE);
+        userEmail.setVisibility(View.VISIBLE);
+        userPassword.setVisibility(View.VISIBLE);
+        forgotPasswordBtn.setVisibility(View.VISIBLE);
+        returnBtn.setVisibility(View.GONE);
+        forgottenPassword.setVisibility(View.GONE);
+        initiateForgottenPasswordBtn.setVisibility(View.GONE);
         startActivity(new Intent(ActivityLogin.this, ActivityLogin.class));
     }
     public void forgotPassword() {
@@ -80,6 +88,12 @@ public class ActivityLogin extends AppCompatActivity {
     }
     public void initiateForgottenPassword() {
         String email = forgottenPassword.getText().toString(); // Get the user's email or prompt the user to enter their email
+
+        if (email.isEmpty()) {
+            Toast.makeText(this, "Please enter an email address", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
         mAuth.sendPasswordResetEmail(email).addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 Toast.makeText(this, "Password reset email sent", Toast.LENGTH_SHORT).show();

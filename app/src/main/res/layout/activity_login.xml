@@ -39,6 +39,7 @@
         android:textColorHint="@color/lightGray"
         android:drawableLeft="@drawable/baseline_email_24"
         android:drawablePadding="8dp"
+        android:inputType="textEmailAddress"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
