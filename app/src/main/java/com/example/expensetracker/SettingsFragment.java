@@ -12,6 +12,8 @@ import androidx.fragment.app.Fragment;
 
 import com.google.android.material.switchmaterial.SwitchMaterial;
 import com.google.firebase.auth.FirebaseAuth;
+import android.content.SharedPreferences;
+
 
 /**
  * A simple {@link Fragment} subclass.
@@ -76,6 +78,7 @@ public class SettingsFragment extends Fragment {
         switchDarkMode = view.findViewById(R.id.switchDarkMode);
         switchDarkMode.setChecked(AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_YES);
         switchDarkMode.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            saveDarkModeSetting(isChecked);
             if (isChecked) {
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
             } else {
@@ -86,9 +89,19 @@ public class SettingsFragment extends Fragment {
         return view;
     }
 
+    private void saveDarkModeSetting(boolean isEnabled) {
+        SharedPreferences sharedPreferences = requireActivity().getSharedPreferences("AppSettingsPrefs", 0);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putBoolean("DarkMode", isEnabled);
+        editor.apply();
+    }
+
     private void logout() {
         // TODO: Implement logout logic
         mAuth.signOut();
-        startActivity(new Intent(requireActivity(), ActivityLogin.class));
+        Intent intent = new Intent(requireActivity(), ActivityLogin.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
+        requireActivity().finish();
     }
 }

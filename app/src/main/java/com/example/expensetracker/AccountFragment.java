@@ -128,6 +128,7 @@ public class AccountFragment extends Fragment {
                 EditText confirmPasswordEditText = dialogView.findViewById(R.id.confirmPasswordEditText);
                 builder.setView(dialogView);
                 builder.setTitle("Change Password");
+                // TODO: Handle empty password fields
                 builder.setPositiveButton("Update", (dialog, which) -> mAuth.signInWithEmailAndPassword(Objects.requireNonNull(user.getEmail()), oldPasswordEditText.getText().toString()).addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
                         if (newPasswordEditText.getText().toString().equals(confirmPasswordEditText.getText().toString()) && newPasswordEditText.getText().toString().length() >= 6 && !newPasswordEditText.getText().toString().equals(oldPasswordEditText.getText().toString())) {

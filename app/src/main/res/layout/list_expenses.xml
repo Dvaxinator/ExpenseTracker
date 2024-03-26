@@ -23,25 +23,26 @@
                 android:id="@+id/image_view"
                 android:layout_width="100dp"
                 android:layout_height="100dp"
+                android:background="@android:color/transparent"
                 android:scaleType="centerCrop"
-                android:src="@drawable/expense_symbol"/>
+                android:src="@drawable/expense_symbol" />
 
             <LinearLayout
                 android:id="@+id/lin_card2"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:padding="16dp"
+                android:background="@color/lightPurple"
                 android:orientation="vertical"
-                android:background="@color/lightpurple">
+                android:padding="16dp">
 
                 <TextView
                     android:id="@+id/card_description"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:text="Description"
                     android:textColor="@color/black"
-                    android:textSize="15sp"
-                    android:text="Description" />
+                    android:textSize="15sp" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -53,28 +54,28 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
+                        android:text="Amount"
                         android:textColor="@color/black"
-                        android:textStyle="bold"
                         android:textSize="25sp"
-                        android:text="Amount" />
+                        android:textStyle="bold" />
 
                     <TextView
                         android:id="@+id/card_date"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textColor="@color/black"
-                        android:textSize="15sp"
+                        android:gravity="right"
                         android:text="Date"
-                        android:gravity="right"/>
+                        android:textColor="@color/black"
+                        android:textSize="15sp" />
                 </LinearLayout>
 
                 <TextView
                     android:id="@+id/card_category"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:text="Category"
                     android:textColor="@color/black"
-                    android:textSize="15sp"
-                    android:text="Category" />
+                    android:textSize="15sp" />
             </LinearLayout>
         </LinearLayout>
     </androidx.cardview.widget.CardView>

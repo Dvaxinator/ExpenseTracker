@@ -2,6 +2,7 @@ package com.example.expensetracker;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -25,6 +26,8 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import android.util.TypedValue;
+
 
 public class ReportsFragment extends Fragment{
 
@@ -107,10 +110,12 @@ public class ReportsFragment extends Fragment{
         });
 
 // Set text color
-        dataSet.setValueTextColor(Color.BLACK);
+        dataSet.setValueTextColor(getThemeColor(R.attr.colorOnBackground));
         dataSet.setValueTextSize(10f);
 
-        dataSet.setValueLineColor(Color.BLACK);
+        pieChart.getLegend().setTextColor(getThemeColor(R.attr.colorOnBackground));
+
+        dataSet.setValueLineColor(getThemeColor(R.attr.colorOnBackground));
         dataSet.setValueLinePart1OffsetPercentage(80.f);
         dataSet.setValueLinePart1Length(0.3f);
         dataSet.setValueLinePart2Length(0.4f);
@@ -142,4 +147,10 @@ public class ReportsFragment extends Fragment{
         }
     }
 
+    private int getThemeColor(int attributeColor) {
+        TypedValue typedValue = new TypedValue();
+        Resources.Theme theme = getContext().getTheme();
+        theme.resolveAttribute(attributeColor, typedValue, true);
+        return typedValue.data;
+    }
 }

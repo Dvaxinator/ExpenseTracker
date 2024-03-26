@@ -26,28 +26,28 @@
                 android:padding="10dp"
                 android:text="Settings"
                 android:textAlignment="center"
-                android:textColor="@color/white"
+                android:textColor="?attr/colorOnBackground"
                 android:textSize="20sp" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="center_vertical">
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:paddingEnd="8dp"
                     android:text="Dark Mode"
-                    android:textColor="@color/black"
-                    android:textSize="25sp"
-                    android:paddingEnd="8dp"/>
+                    android:textColor="?attr/colorOnBackground"
+                    android:textSize="25sp" />
 
                 <com.google.android.material.switchmaterial.SwitchMaterial
                     android:id="@+id/switchDarkMode"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center"/>
+                    android:layout_gravity="center" />
             </LinearLayout>
         </LinearLayout>
 
@@ -58,7 +58,9 @@
             android:layout_gravity="center"
             android:layout_marginBottom="15dp"
             android:layout_weight="1"
+            android:backgroundTint="?attr/colorButtonNormal"
             android:text="LOG OUT"
+            android:textColor="@android:color/white"
             android:textSize="16sp" />
 
     </LinearLayout>

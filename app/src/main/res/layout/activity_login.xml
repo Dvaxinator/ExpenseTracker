@@ -35,7 +35,7 @@
         android:layout_margin="20dp"
         android:hint="Email"
         android:padding="12dp"
-        android:textColor="@color/black"
+        android:textColor="?attr/colorOnBackground"
         android:textColorHint="@color/lightGray"
         android:drawableLeft="@drawable/baseline_email_24"
         android:drawablePadding="8dp"

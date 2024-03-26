@@ -7,6 +7,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 import com.example.expensetracker.databinding.ActivityUserMenuBinding;
+import android.content.SharedPreferences;
+import androidx.appcompat.app.AppCompatDelegate;
+
+
 
 public class UserMenu extends AppCompatActivity implements AddExpenseFragment.OnExpenseAddedListener {
 
@@ -17,6 +21,16 @@ public class UserMenu extends AppCompatActivity implements AddExpenseFragment.On
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        SharedPreferences appSettingsPrefs = getSharedPreferences("AppSettingsPrefs", 0);
+        boolean isDarkModeOn = appSettingsPrefs.getBoolean("DarkMode", false);
+
+        if (isDarkModeOn) {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+        } else {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+        }
+
         binding = ActivityUserMenuBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
