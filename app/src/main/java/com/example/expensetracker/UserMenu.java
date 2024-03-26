@@ -20,8 +20,6 @@ public class UserMenu extends AppCompatActivity implements AddExpenseFragment.On
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
         SharedPreferences appSettingsPrefs = getSharedPreferences("AppSettingsPrefs", 0);
         boolean isDarkModeOn = appSettingsPrefs.getBoolean("DarkMode", false);
 
@@ -30,6 +28,8 @@ public class UserMenu extends AppCompatActivity implements AddExpenseFragment.On
         } else {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
         }
+
+        super.onCreate(savedInstanceState);
 
         binding = ActivityUserMenuBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
