@@ -102,6 +102,7 @@ public class ActivityLogin extends AppCompatActivity {
                 userEmail.setVisibility(View.VISIBLE);
                 userPassword.setVisibility(View.VISIBLE);
                 forgotPasswordBtn.setVisibility(View.VISIBLE);
+                returnBtn.setVisibility(View.GONE);
                 forgottenPassword.setVisibility(View.GONE);
                 initiateForgottenPasswordBtn.setVisibility(View.GONE);
             } else {
