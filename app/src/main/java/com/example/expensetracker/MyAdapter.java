@@ -2,13 +2,10 @@ package com.example.expensetracker;
 
 import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
@@ -44,37 +41,20 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
         holder.cardDate.setText(data.getDate().toString());
 
         // Implementing long click listener for the card view
-        holder.cardView.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                // Create and show a confirmation dialog
-                AlertDialog.Builder builder = new AlertDialog.Builder(context);
-                builder.setTitle("Confirm Deletion");
-                builder.setMessage("Are you sure you want to delete this expense?");
-                builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        // Remove the expense from the dataset
-                        dataList.remove(position);
-                        // Notify adapter of the change
-                        notifyDataSetChanged();
-                        // Notify user that the expense has been deleted
-                        Toast.makeText(context, "Expense Deleted!", Toast.LENGTH_SHORT).show();
-                        // Call the listener to inform about expense deletion
-                        expenseDeletedListener.onExpenseDeleted();
-                    }
-                });
-                builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        // Dismiss the dialog if the user clicks "No"
-                        dialog.dismiss();
-                    }
-                });
-                // Show the dialog
-                builder.show();
-                return true;
-            }
+        holder.cardView.setOnLongClickListener(v -> {
+            AlertDialog.Builder builder = new AlertDialog.Builder(context);
+            builder.setTitle("Confirm Deletion");
+            builder.setMessage("Are you sure you want to delete this expense?");
+            builder.setPositiveButton("Yes", (dialog, which) -> {
+                String key = dataList.get(holder.getAdapterPosition()).key;
+                if (expenseDeletedListener != null) {
+                    expenseDeletedListener.onExpenseDeleted(key);
+                }
+                dialog.dismiss();
+            });
+            builder.setNegativeButton("No", (dialog, which) -> dialog.dismiss());
+            builder.show();
+            return true;
         });
 
     }
@@ -99,6 +79,6 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
     }
 
     public interface OnExpenseDeletedListener {
-        void onExpenseDeleted();
+        void onExpenseDeleted(String key);
     }
 }

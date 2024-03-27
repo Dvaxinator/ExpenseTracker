@@ -1,14 +1,16 @@
 package com.example.expensetracker;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.util.Log;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -19,38 +21,62 @@ import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
 import com.github.mikephil.charting.formatter.ValueFormatter;
-import com.github.mikephil.charting.utils.ColorTemplate;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.text.NumberFormat;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
-import android.util.TypedValue;
 
 
-public class ReportsFragment extends Fragment{
+public class ReportsFragment extends Fragment {
 
-       ArrayList<MyDataSet> dataSet = new ArrayList<>();
-       private MyAdapter myAdapter;
+    ArrayList<MyDataSet> dataSet = new ArrayList<>();
+    private MyAdapter myAdapter;
+    private DatabaseReference mDatabase;
 
     @Nullable
-       @Override
-     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-             View view = inflater.inflate(R.layout.fragment_reports, container, false);
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_reports, container, false);
 
-             SharedPreferences sharedPreferences = getActivity().getSharedPreferences("expenses", Context.MODE_PRIVATE);
-             Set<String> expensesSet = sharedPreferences.getStringSet("expenses_set", new HashSet<>());
-             ArrayList<Expense> expenses = new ArrayList<>();
-             for (String expense : expensesSet) {
-                 String[] expenseData = expense.split(",");
-                 Expense exp = new Expense(Double.parseDouble(expenseData[1]), expenseData[2]);
-                 expenses.add(exp);
-             }
-             setupPieChart(view, expenses);
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if (user != null) {
+            mDatabase = FirebaseDatabase.getInstance().getReference("expenses").child(user.getUid());
+            fetchExpensesAndSetupChart(view);
+        } else {
+            Log.e("ReportsFragment", "User is not logged in");
+        }
 
-            return view;
-     }
+        return view;
+    }
+
+    private void fetchExpensesAndSetupChart(View view) {
+        mDatabase.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                ArrayList<Expense> expenses = new ArrayList<>();
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    MyDataSet expenseData = snapshot.getValue(MyDataSet.class);
+                    if (expenseData != null) {
+                        Expense exp = new Expense(expenseData.getAmount(), expenseData.getCategory());
+                        expenses.add(exp);
+                    }
+                }
+                setupPieChart(view, expenses);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Log.w("ReportsFragment", "loadExpenses:onCancelled", databaseError.toException());
+            }
+        });
+    }
 
     private void setupPieChart(View view, ArrayList<Expense> expenses) {
         PieChart pieChart = view.findViewById(R.id.pie_chart);
@@ -110,12 +136,12 @@ public class ReportsFragment extends Fragment{
         });
 
 // Set text color
-        dataSet.setValueTextColor(getThemeColor(R.attr.colorOnBackground));
+        dataSet.setValueTextColor(safeGetThemeColor(R.attr.colorOnBackground));
         dataSet.setValueTextSize(10f);
 
-        pieChart.getLegend().setTextColor(getThemeColor(R.attr.colorOnBackground));
+        pieChart.getLegend().setTextColor(safeGetThemeColor(R.attr.colorOnBackground));
 
-        dataSet.setValueLineColor(getThemeColor(R.attr.colorOnBackground));
+        dataSet.setValueLineColor(safeGetThemeColor(R.attr.colorOnBackground));
         dataSet.setValueLinePart1OffsetPercentage(80.f);
         dataSet.setValueLinePart1Length(0.3f);
         dataSet.setValueLinePart2Length(0.4f);
@@ -126,7 +152,6 @@ public class ReportsFragment extends Fragment{
         pieChart.setExtraOffsets(20, 20, 20, 20);
         pieChart.invalidate(); // Refresh the chart
     }
-
 
 
     public static class Expense {
@@ -147,10 +172,16 @@ public class ReportsFragment extends Fragment{
         }
     }
 
-    private int getThemeColor(int attributeColor) {
-        TypedValue typedValue = new TypedValue();
-        Resources.Theme theme = getContext().getTheme();
-        theme.resolveAttribute(attributeColor, typedValue, true);
-        return typedValue.data;
+    private int safeGetThemeColor(int attributeColor) {
+        Context context = getContext();
+        if (context != null) {
+            TypedValue typedValue = new TypedValue();
+            Resources.Theme theme = context.getTheme();
+            if (theme != null) {
+                theme.resolveAttribute(attributeColor, typedValue, true);
+                return typedValue.data;
+            }
+        }
+        return Color.TRANSPARENT; // Fallback color
     }
 }

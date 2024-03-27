@@ -1,6 +1,5 @@
 package com.example.expensetracker;
 
-import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
@@ -8,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -15,9 +15,15 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
 import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Set;
 
 public class HomePageFragment extends Fragment implements AddExpenseFragment.OnExpenseAddedListener, MyAdapter.OnExpenseDeletedListener {
 
@@ -26,6 +32,7 @@ public class HomePageFragment extends Fragment implements AddExpenseFragment.OnE
     ArrayList<MyDataSet> dataSet = new ArrayList<>();
     private MyAdapter myAdapter;
     private SharedPreferences sharedPreferences;
+    private DatabaseReference mDatabase;
 
     @Nullable
     @Override
@@ -40,21 +47,14 @@ public class HomePageFragment extends Fragment implements AddExpenseFragment.OnE
         myAdapter = new MyAdapter(dataSet, getActivity(), this); // getActivity() is used to provide a context
         recyclerView.setAdapter(myAdapter);
 
-        // Retrieve saved expenses data from SharedPreferences
-        sharedPreferences = getActivity().getSharedPreferences("expenses", Context.MODE_PRIVATE);
-        Set<String> expensesSet = sharedPreferences.getStringSet("expenses_set", new HashSet<String>());
-        for (String expense : expensesSet) {
-            String[] expenseData = expense.split(",");
-            dataSet.add(new MyDataSet(expenseData[0], Double.parseDouble(expenseData[1]), expenseData[2], expenseData[3]));
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if (user != null) {
+            mDatabase = FirebaseDatabase.getInstance().getReference("expenses").child(user.getUid());
         }
-        myAdapter.notifyDataSetChanged();
 
-        add.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                AddExpenseFragment addExpenseDialog = new AddExpenseFragment();
-                addExpenseDialog.show(getActivity().getSupportFragmentManager().beginTransaction(), "addExpenseDialog");
-            }
+        add.setOnClickListener(v -> {
+            AddExpenseFragment addExpenseDialog = new AddExpenseFragment();
+            addExpenseDialog.show(getActivity().getSupportFragmentManager().beginTransaction(), "addExpenseDialog");
         });
 
         return view;
@@ -62,25 +62,34 @@ public class HomePageFragment extends Fragment implements AddExpenseFragment.OnE
 
     @Override
     public void onExpenseAdded(MyDataSet expense) {
-        dataSet.add(expense);
-        myAdapter.notifyDataSetChanged();
-        Log.d("Expense added", expense.getDescription());
-        updateSharedPreferences();
+        String key = mDatabase.push().getKey();
+        if (key != null) {
+            mDatabase.child(key).setValue(expense).addOnCompleteListener(task -> {
+                if (task.isSuccessful()) {
+                    Log.d("HomePageFragment", "Expense added to Firebase successfully.");
+                } else {
+                    Log.w("HomePageFragment", "Error adding expense to Firebase.", task.getException());
+                }
+            });
+        }
     }
 
     @Override
-    public void onExpenseDeleted() {
-        updateSharedPreferences();
-    }
-
-    private void updateSharedPreferences() {
-        Set<String> expensesSet = new HashSet<>();
-        for (MyDataSet data : dataSet) {
-            expensesSet.add(data.getDescription() + "," + data.getAmount() + "," + data.getCategory() + "," + data.getDate());
+    public void onExpenseDeleted(String key) {
+        if (key == null || key.trim().isEmpty()) {
+            Log.e("ExpenseDeletion", "Attempted to delete an expense with no key.");
+            Toast.makeText(getContext(), "Error: No key for expense.", Toast.LENGTH_SHORT).show();
+            return;
         }
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putStringSet("expenses_set", expensesSet);
-        editor.apply();
+
+        DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference("expenses").child(FirebaseAuth.getInstance().getCurrentUser().getUid());
+        mDatabase.child(key).removeValue().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                Toast.makeText(getContext(), "Expense Deleted!", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(getContext(), "Failed to delete expense!", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     @Override
@@ -90,15 +99,26 @@ public class HomePageFragment extends Fragment implements AddExpenseFragment.OnE
     }
 
     private void loadData() {
-        // Clear the existing dataset to avoid duplicates.
-        dataSet.clear();
+        if (mDatabase != null) {
+            mDatabase.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    dataSet.clear();
+                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                        MyDataSet expense = snapshot.getValue(MyDataSet.class);
+                        if (expense != null) {
+                            expense.key = snapshot.getKey();
+                            dataSet.add(expense);
+                        }
+                    }
+                    myAdapter.notifyDataSetChanged();
+                }
 
-        // Reload saved expenses data from SharedPreferences.
-        Set<String> expensesSet = sharedPreferences.getStringSet("expenses_set", new HashSet<String>());
-        for (String expense : expensesSet) {
-            String[] expenseData = expense.split(",");
-            dataSet.add(new MyDataSet(expenseData[0], Double.parseDouble(expenseData[1]), expenseData[2], expenseData[3]));
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+                    Log.w("HomePageFragment", "loadExpenses:onCancelled", error.toException());
+                }
+            });
         }
-        myAdapter.notifyDataSetChanged(); // Notify the adapter about the dataset change.
     }
 }

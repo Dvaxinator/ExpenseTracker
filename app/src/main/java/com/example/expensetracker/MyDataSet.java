@@ -5,12 +5,25 @@ public class MyDataSet {
     public double amount;
     public String category;
     public String date;
+    public String key;
+
+    public MyDataSet() {
+    }
 
     public MyDataSet(String description, double amount, String category, String date) {
         this.description = description;
         this.amount = amount;
         this.category = category;
         this.date = date;
+        this.key = "";
+    }
+
+    public String getKey() {
+        return key;
+    }
+
+    public void setKey(String key) {
+        this.key = key;
     }
 
     public double getAmount() {
