@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import androidx.appcompat.app.AppCompatDelegate;
+import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 
 import com.google.android.material.switchmaterial.SwitchMaterial;
@@ -25,6 +26,7 @@ public class SettingsFragment extends Fragment {
     private Button buttonLogOut;
     private FirebaseAuth mAuth;
     private SwitchMaterial switchDarkMode;
+    CardView cardView;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -74,6 +76,8 @@ public class SettingsFragment extends Fragment {
 
         buttonLogOut = view.findViewById(R.id.buttonLogOut);
         buttonLogOut.setOnClickListener(v -> logout());
+
+        cardView = view.findViewById(R.id.cardView);
 
         switchDarkMode = view.findViewById(R.id.switchDarkMode);
         switchDarkMode.setChecked(AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_YES);

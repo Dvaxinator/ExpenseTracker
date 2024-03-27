@@ -5,14 +5,15 @@
     android:id="@+id/settings"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".SettingsFragment">
+    tools:context=".SettingsFragment"
+    android:background="@color/lightPurple">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <LinearLayout
+        <RelativeLayout
             android:id="@+id/linearLayout"
             android:layout_width="match_parent"
             android:layout_height="0dp"
@@ -26,42 +27,136 @@
                 android:padding="10dp"
                 android:text="Settings"
                 android:textAlignment="center"
-                android:textColor="?attr/colorOnBackground"
-                android:textSize="20sp" />
+                android:textSize="30sp"
+                android:textStyle="bold"/>
 
-            <LinearLayout
+            <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center_vertical"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:layout_width="wrap_content"
+                android:layout_below="@id/SettingsTitle"
+                android:paddingTop="10dp"
+                android:id="@+id/cardView">
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingEnd="8dp"
-                    android:text="Dark Mode"
-                    android:textColor="?attr/colorOnBackground"
-                    android:textSize="25sp" />
+                    android:orientation="vertical">
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Profile"
+                        android:drawableLeft="@drawable/baseline_person_24"
+                        android:drawablePadding="8dp"
+                        android:padding="10dp"
+                        android:textSize="25sp"
+                        android:background="@color/lightPurple"
+                        android:drawableRight="@drawable/baseline_keyboard_arrow_right_24"
+                        />
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Dashboard"
+                        android:drawableLeft="@drawable/baseline_dashboard_24"
+                        android:drawablePadding="8dp"
+                        android:textSize="25sp"
+                        android:padding="10dp"
+                        android:background="@color/lightPurple"
+                        android:drawableRight="@drawable/baseline_keyboard_arrow_right_24"
+                        />
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Calculator"
+                        android:drawableLeft="@drawable/baseline_calculate_24"
+                        android:drawablePadding="8dp"
+                        android:textSize="25sp"
+                        android:padding="10dp"
+                        android:background="@color/lightPurple"
+                        android:drawableRight="@drawable/baseline_keyboard_arrow_right_24"
+                        />
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Trends"
+                        android:drawableLeft="@drawable/baseline_data_exploration_24"
+                        android:drawablePadding="8dp"
+                        android:textSize="25sp"
+                        android:padding="10dp"
+                        android:background="@color/lightPurple"
+                        android:drawableRight="@drawable/baseline_keyboard_arrow_right_24"
+                        />
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Monthly Statistics"
+                        android:drawableLeft="@drawable/baseline_bar_chart_24"
+                        android:drawablePadding="8dp"
+                        android:textSize="25sp"
+                        android:padding="10dp"
+                        android:background="@color/lightPurple"
+                        android:drawableRight="@drawable/baseline_keyboard_arrow_right_24"
+                        />
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="About"
+                        android:drawableLeft="@drawable/baseline_info_24"
+                        android:drawablePadding="8dp"
+                        android:textSize="25sp"
+                        android:padding="10dp"
+                        android:background="@color/lightPurple"
+                        android:drawableRight="@drawable/baseline_keyboard_arrow_right_24"
+                        />
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Contact Us"
+                        android:drawableLeft="@drawable/baseline_contact_mail_24"
+                        android:drawablePadding="8dp"
+                        android:textSize="25sp"
+                        android:padding="10dp"
+                        android:background="@color/lightPurple"
+                        android:drawableRight="@drawable/baseline_keyboard_arrow_right_24"
+                        />
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:layout_below="@id/cardView"
+                        android:paddingLeft="10dp"
+                        android:background="@color/lightPurple">
 
-                <com.google.android.material.switchmaterial.SwitchMaterial
-                    android:id="@+id/switchDarkMode"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center" />
-            </LinearLayout>
-        </LinearLayout>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:paddingEnd="8dp"
+                            android:text="Dark Mode"
+                            android:textSize="25sp" />
 
-        <Button
-            android:id="@+id/buttonLogOut"
-            android:layout_width="200dp"
-            android:layout_height="20dp"
-            android:layout_gravity="center"
-            android:layout_marginBottom="15dp"
-            android:layout_weight="1"
-            android:backgroundTint="?attr/colorButtonNormal"
-            android:text="LOG OUT"
-            android:textColor="@android:color/white"
-            android:textSize="16sp" />
-
+                        <com.google.android.material.switchmaterial.SwitchMaterial
+                            android:id="@+id/switchDarkMode"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center" />
+                    </LinearLayout>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+            <Button
+                android:id="@+id/buttonLogOut"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="Logout"
+                android:textColor="@android:color/black"
+                android:textSize="25sp"
+                android:background="@android:color/transparent"
+                android:drawableLeft="@drawable/baseline_exit_to_app_24"
+                android:drawablePadding="8dp"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
+                android:layout_below="@id/cardView"
+                android:layout_centerHorizontal="true"
+                />
+        </RelativeLayout>
     </LinearLayout>
 </FrameLayout>

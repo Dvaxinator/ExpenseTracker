@@ -8,22 +8,26 @@
     android:orientation="vertical"
     tools:context=".AccountFragment">
 
-    <TextView
-        android:id="@+id/AccountTitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="250dp"
+        android:src="@drawable/account_background"
+        android:id="@+id/img"/>
+
+    <ImageView
+        android:layout_width="225dp"
+        android:layout_height="219dp"
+        android:layout_marginTop="-110dp"
+        android:src="@drawable/register_user"
+        android:layout_below="@+id/img"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="16dp"
-        android:text="Account"
-        android:textColor="?attr/colorOnBackground"
-        android:textSize="30sp"
-        android:textStyle="bold" />
+        android:id="@+id/img2"/>
 
     <Button
         android:id="@+id/buttonAccountInfo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/AccountTitle"
+        android:layout_below="@id/img2"
         android:layout_marginBottom="8dp"
         android:backgroundTint="?attr/colorButtonNormal"
         android:text="Account Info"
@@ -36,14 +40,12 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/buttonAccountInfo"
         android:layout_margin="16dp"
-        android:background="@drawable/rounded_border_bg"
         android:visibility="invisible">
 
         <TextView
             android:id="@+id/emailInfo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="16dp"
             android:text="Email: "
             android:textColor="?attr/colorOnBackground"
             android:textSize="22sp" />
@@ -53,7 +55,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/emailInfo"
-            android:padding="16dp"
+
             android:text="Username:"
             android:textColor="?attr/colorOnBackground"
             android:textSize="22sp" />
