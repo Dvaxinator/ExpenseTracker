@@ -45,6 +45,7 @@ public class SignUpActivity extends AppCompatActivity {
         buttonSignUp.setOnClickListener(view -> signUp());
         buttonLogIn.setOnClickListener(view -> goToLogin());
     }
+
     private void goToLogin() {
         Intent loginPageIntent = new Intent(SignUpActivity.this, ActivityLogin.class);
         startActivity(loginPageIntent);

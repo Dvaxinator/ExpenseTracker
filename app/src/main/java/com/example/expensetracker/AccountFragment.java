@@ -3,7 +3,6 @@ package com.example.expensetracker;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.Layout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,9 +37,11 @@ public class AccountFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+
     public AccountFragment() {
         // Required empty public constructor
     }
+
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
@@ -90,33 +91,55 @@ public class AccountFragment extends Fragment {
             buttonInitiateUsernameChange.setOnClickListener(v2 -> {
                 AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
                 View dialogView = getLayoutInflater().inflate(R.layout.change_username_dialog, null);
-                EditText confirmusernameEditText = dialogView.findViewById(R.id.confirmUsernameEditText);
-                EditText newusernameEditText = dialogView.findViewById(R.id.newUsernameEditText);
+                EditText confirmUsernameEditText = dialogView.findViewById(R.id.confirmUsernameEditText);
+                EditText newUsernameEditText = dialogView.findViewById(R.id.newUsernameEditText);
                 builder.setView(dialogView);
                 builder.setTitle("Change Username");
-                builder.setPositiveButton("Update", (dialog, which) -> {
-                    FirebaseUser user = mAuth.getCurrentUser();
-                    if(newusernameEditText.getText().toString().equals(confirmusernameEditText.getText().toString())) {
-                        UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder().setDisplayName(newusernameEditText.getText().toString()).build();
-                        assert user != null;
-                        user.updateProfile(profileUpdates).addOnCompleteListener(task1 -> {
-                            if (task1.isSuccessful()) {
-                                // Display a message indicating that the display name has been set
-                                Toast.makeText(getActivity(), "Username changed successfully!", Toast.LENGTH_SHORT).show();
 
-                                usernameInfo.setText("Username: " + user.getDisplayName());
-                            } else {
-                                // Display a message if setting the display name fails
-                                Toast.makeText(getActivity(), "Failed to change username!", Toast.LENGTH_SHORT).show();
-                            }
-                        });
-                    }
-                    else {
-                        Toast.makeText(getActivity(), "Usernames must match!", Toast.LENGTH_SHORT).show();
-                    }
+                builder.setPositiveButton("Update", null);
+                builder.setNegativeButton("Cancel", (dialog, which) -> dialog.dismiss());
+
+                AlertDialog dialog = builder.create();
+
+                dialog.setOnShowListener(dialogInterface -> {
+                    Button updateButton = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
+                    updateButton.setOnClickListener(v1 -> {
+                        String newUsername = newUsernameEditText.getText().toString();
+                        String confirmUsername = confirmUsernameEditText.getText().toString();
+
+                        if (newUsername.isEmpty()) {
+                            newUsernameEditText.setError("This field cannot be empty");
+                            newUsernameEditText.requestFocus();
+                            return;
+                        }
+                        if (confirmUsername.isEmpty()) {
+                            confirmUsernameEditText.setError("This field cannot be empty");
+                            confirmUsernameEditText.requestFocus();
+                            return;
+                        }
+
+                        if (!newUsername.equals(confirmUsername)) {
+                            Toast.makeText(getActivity(), "Usernames must match!", Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+
+                        FirebaseUser user = mAuth.getCurrentUser();
+                        if (user != null) {
+                            UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder().setDisplayName(newUsername).build();
+                            user.updateProfile(profileUpdates).addOnCompleteListener(task1 -> {
+                                if (task1.isSuccessful()) {
+                                    Toast.makeText(getActivity(), "Username changed successfully!", Toast.LENGTH_SHORT).show();
+                                    usernameInfo.setText("Username: " + user.getDisplayName());
+                                    dialog.dismiss();
+                                } else {
+                                    Toast.makeText(getActivity(), "Failed to change username!", Toast.LENGTH_SHORT).show();
+                                }
+                            });
+                        }
+                    });
                 });
-                builder.setNegativeButton("Cancel", null);
-                builder.create().show();
+
+                dialog.show();
             });
 
             buttonInitiatePasswordReset.setVisibility(View.VISIBLE);
@@ -128,26 +151,54 @@ public class AccountFragment extends Fragment {
                 EditText confirmPasswordEditText = dialogView.findViewById(R.id.confirmPasswordEditText);
                 builder.setView(dialogView);
                 builder.setTitle("Change Password");
-                // TODO: Handle empty password fields
-                builder.setPositiveButton("Update", (dialog, which) -> mAuth.signInWithEmailAndPassword(Objects.requireNonNull(user.getEmail()), oldPasswordEditText.getText().toString()).addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        if (newPasswordEditText.getText().toString().equals(confirmPasswordEditText.getText().toString()) && newPasswordEditText.getText().toString().length() >= 6 && !newPasswordEditText.getText().toString().equals(oldPasswordEditText.getText().toString())) {
-                            user.updatePassword(newPasswordEditText.getText().toString());
-                            mAuth.signOut();
-                            Toast.makeText(getActivity(), "Updating Password Successful! Please Login Using New Password!", Toast.LENGTH_LONG).show();
-                            startActivity(new Intent(requireActivity(), ActivityLogin.class));
-                        } else if (newPasswordEditText.getText().toString().equals(oldPasswordEditText.getText().toString())) {
-                            Toast.makeText(getActivity(), "Updating Password Failed! Please ensure you choose a new password different from your old one!", Toast.LENGTH_LONG).show();
-                        } else {
-                            Toast.makeText(getActivity(), "Updating Password Failed! Please ensure the new passwords match and are of valid length!", Toast.LENGTH_LONG).show();
+
+                builder.setPositiveButton("Update", null);
+                builder.setNegativeButton("Cancel", (dialog, which) -> dialog.dismiss());
+
+                AlertDialog dialog = builder.create();
+
+                dialog.setOnShowListener(dialogInterface -> {
+                    Button updateButton = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
+                    updateButton.setOnClickListener(view1 -> {
+                        //boolean isValid = true;
+
+                        if (oldPasswordEditText.getText().toString().trim().isEmpty()) {
+                            oldPasswordEditText.setError("This field cannot be empty");
+                            oldPasswordEditText.requestFocus();
+                            return;
                         }
-                    }
-                    else {
-                        Toast.makeText(getActivity(), "Updating Password Failed! Please check credentials.", Toast.LENGTH_LONG).show();
-                    }
-                }));
-                builder.setNegativeButton("Cancel", null);
-                builder.create().show();
+
+                        if (newPasswordEditText.getText().toString().trim().isEmpty()) {
+                            newPasswordEditText.setError("This field cannot be empty");
+                            newPasswordEditText.requestFocus();
+                            return;
+                        }
+
+                        if (confirmPasswordEditText.getText().toString().trim().isEmpty()) {
+                            confirmPasswordEditText.setError("This field cannot be empty");
+                            confirmPasswordEditText.requestFocus();
+                            return;
+                        }
+
+                        mAuth.signInWithEmailAndPassword(Objects.requireNonNull(user.getEmail()), oldPasswordEditText.getText().toString()).addOnCompleteListener(task -> {
+                            if (task.isSuccessful()) {
+                                if (newPasswordEditText.getText().toString().equals(confirmPasswordEditText.getText().toString()) && newPasswordEditText.getText().toString().length() >= 6 && !newPasswordEditText.getText().toString().equals(oldPasswordEditText.getText().toString())) {
+                                    user.updatePassword(newPasswordEditText.getText().toString());
+                                    mAuth.signOut();
+                                    Toast.makeText(getActivity(), "Updating Password Successful! Please Login Using New Password!", Toast.LENGTH_LONG).show();
+                                    startActivity(new Intent(requireActivity(), ActivityLogin.class));
+                                    dialog.dismiss();
+                                } else {
+                                    Toast.makeText(getActivity(), "Ensure your new password is different, matches confirmation, and is at least 6 characters long.", Toast.LENGTH_LONG).show();
+                                }
+                            } else {
+                                Toast.makeText(getActivity(), "Failed to authenticate. Please check your current password.", Toast.LENGTH_LONG).show();
+                            }
+                        });
+                    });
+                });
+
+                dialog.show();
             });
         });
         // Inflate the layout for this fragment

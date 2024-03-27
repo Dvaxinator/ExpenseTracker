@@ -130,20 +130,25 @@ public class AddExpenseFragment extends DialogFragment {
                 String category = addCategory.getText().toString().trim();
                 String date = addDate.getText().toString().trim();
 
-                if (description.isEmpty() || amountText.isEmpty() || category.isEmpty() || date.isEmpty()) {
-                    if (description.isEmpty()) {
-                        addDescription.setError("Description is required");
-                    }
-                    if (amountText.isEmpty()) {
-                        addAmount.setError("Amount is required");
-                    }
-                    if (category.isEmpty()) {
-                        addCategory.setError("Category is required");
-                    }
-                    if (date.isEmpty()) {
-                        addDate.setError("Date is required");
-                    }
-                    return; // Don't proceed further
+                if (description.isEmpty()) {
+                    addDescription.setError("Description is required");
+                    addDescription.requestFocus();
+                    return;
+                }
+                if (amountText.isEmpty()) {
+                    addAmount.setError("Amount is required");
+                    addDescription.requestFocus();
+                    return;
+                }
+                if (category.isEmpty()) {
+                    addCategory.setError("Category is required");
+                    addDescription.requestFocus();
+                    return;
+                }
+                if (date.isEmpty()) {
+                    addDate.setError("Date is required");
+                    addDescription.requestFocus();
+                    return;
                 }
 
                 double amount = Double.parseDouble(amountText);
