@@ -78,16 +78,22 @@ public class HomePageFragment extends Fragment implements AddExpenseFragment.OnE
     public void onExpenseDeleted(String key) {
         if (key == null || key.trim().isEmpty()) {
             Log.e("ExpenseDeletion", "Attempted to delete an expense with no key.");
-            Toast.makeText(getContext(), "Error: No key for expense.", Toast.LENGTH_SHORT).show();
+            if (isAdded()) {
+                Toast.makeText(getContext(), "Error: No key for expense.", Toast.LENGTH_SHORT).show();
+            }
             return;
         }
 
         DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference("expenses").child(FirebaseAuth.getInstance().getCurrentUser().getUid());
         mDatabase.child(key).removeValue().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
-                Toast.makeText(getContext(), "Expense Deleted!", Toast.LENGTH_SHORT).show();
+                if (isAdded()) {
+                    Toast.makeText(getContext(), "Expense Deleted!", Toast.LENGTH_SHORT).show();
+                }
             } else {
-                Toast.makeText(getContext(), "Failed to delete expense!", Toast.LENGTH_SHORT).show();
+                if (isAdded()) {
+                    Toast.makeText(getContext(), "Failed to delete expense!", Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }
