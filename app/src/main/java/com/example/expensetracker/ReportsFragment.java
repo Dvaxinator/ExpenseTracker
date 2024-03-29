@@ -31,13 +31,13 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 public class ReportsFragment extends Fragment {
 
-    ArrayList<MyDataSet> dataSet = new ArrayList<>();
-    private MyAdapter myAdapter;
     private DatabaseReference mDatabase;
 
     @Nullable
@@ -60,15 +60,20 @@ public class ReportsFragment extends Fragment {
         mDatabase.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                ArrayList<Expense> expenses = new ArrayList<>();
+                HashMap<String, Float> categoryTotals = new HashMap<>();
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     MyDataSet expenseData = snapshot.getValue(MyDataSet.class);
                     if (expenseData != null) {
-                        Expense exp = new Expense(expenseData.getAmount(), expenseData.getCategory());
-                        expenses.add(exp);
+                        String category = expenseData.getCategory();
+                        float amount = (float) expenseData.getAmount();
+                        categoryTotals.put(category, categoryTotals.getOrDefault(category, 0f) + amount);
                     }
                 }
-                setupPieChart(view, expenses);
+                ArrayList<PieEntry> entries = new ArrayList<>();
+                for (Map.Entry<String, Float> entry : categoryTotals.entrySet()) {
+                    entries.add(new PieEntry(entry.getValue(), entry.getKey()));
+                }
+                setupPieChart(view, entries);
             }
 
             @Override
@@ -78,7 +83,7 @@ public class ReportsFragment extends Fragment {
         });
     }
 
-    private void setupPieChart(View view, ArrayList<Expense> expenses) {
+    private void setupPieChart(View view, ArrayList<PieEntry> entries) {
         PieChart pieChart = view.findViewById(R.id.pie_chart);
         pieChart.getDescription().setEnabled(false);
         pieChart.setExtraOffsets(5, 10, 5, 5);
@@ -96,12 +101,7 @@ public class ReportsFragment extends Fragment {
         pieChart.setHighlightPerTapEnabled(true);
         pieChart.animateY(1400, Easing.EaseInOutQuad);
 
-        ArrayList<PieEntry> entries = new ArrayList<>();
-        for (Expense exp : expenses) {
-            entries.add(new PieEntry((float) exp.getAmount(), exp.getCategory()));
-        }
-
-        PieDataSet dataSet = new PieDataSet(entries, "Expenses");
+        PieDataSet dataSet = new PieDataSet(entries, "");
         dataSet.setSliceSpace(3f);
         dataSet.setSelectionShift(5f);
 
@@ -135,7 +135,7 @@ public class ReportsFragment extends Fragment {
             }
         });
 
-// Set text color
+        // Set text color
         dataSet.setValueTextColor(safeGetThemeColor(R.attr.colorOnBackground));
         dataSet.setValueTextSize(10f);
 
@@ -153,24 +153,6 @@ public class ReportsFragment extends Fragment {
         pieChart.invalidate(); // Refresh the chart
     }
 
-
-    public static class Expense {
-        private double amount;
-        private String category;
-
-        public Expense(double amount, String category) {
-            this.amount = amount;
-            this.category = category;
-        }
-
-        public double getAmount() {
-            return amount;
-        }
-
-        public String getCategory() {
-            return category;
-        }
-    }
 
     private int safeGetThemeColor(int attributeColor) {
         Context context = getContext();
