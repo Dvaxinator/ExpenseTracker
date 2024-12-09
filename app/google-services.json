@@ -1,13 +1,13 @@
 {
   "project_info": {
-    "project_number": "851079743671",
-    "project_id": "expensetracker-c943a",
-    "storage_bucket": "expensetracker-c943a.appspot.com"
+    "project_number": "777033794632",
+    "project_id": "expensetracker-84e3c",
+    "storage_bucket": "expensetracker-84e3c.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:851079743671:android:ecf438d6a24f5ac1186532",
+        "mobilesdk_app_id": "1:777033794632:android:1dbb27656e30c78749047d",
         "android_client_info": {
           "package_name": "com.example.expensetracker"
         }
@@ -15,7 +15,7 @@
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyDAw1uWRtlv13Fo268Kl8Vs8ngA9CIYnU0"
+          "current_key": "AIzaSyCPCxkrfj0OoqRRayuxQjKUzlx6XKELGYU"
         }
       ],
       "services": {
